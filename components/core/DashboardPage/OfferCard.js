@@ -46,13 +46,17 @@ const OfferCard = ({ data }) => {
             </div>
 
             <div className='flex justify-between flex-wrap '>
-                <div className='flex items-center gap-2 bg-[#9c3d38dd] px-4 text-white rounded py-1 cursor-pointer shadow-lg group-hover:bg-[#9c3d38] transition-all duration-200'>
-                    <RxUpdate />
-                    Update
+                <div className=' bg-[#9c3d38dd] px-4 text-white rounded py-1 cursor-pointer shadow-lg group-hover:bg-[#9c3d38] transition-all duration-200'>
+                    <Link href={`/offer/update/${data?._id}`} className="flex items-center gap-2">
+                        <RxUpdate />
+                        Update
+                    </Link>
                 </div>
                 <div className='flex items-center gap-2 bg-[#B3B3CC] px-4 text-white rounded py-1 cursor-pointer shadow-lg group-hover:bg-[#9699BF] transition-all duration-200'>
+                <Link href={`/offer/delete/${data?._id}`} className="flex items-center gap-2">
                     <AiFillDelete />
                     Delete
+                </Link>
                 </div>
             </div>
         </div>
