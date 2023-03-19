@@ -10,7 +10,7 @@ const Navbar = ({ children }) => {
                 <div className="h-10 flex justify-between items-center">
                     <Link href="/dashboard">
                         <div>
-                            <img src="/images/Logo1.png" alt="" className="h-12" />
+                            <img src="/images/Logo1.png" alt="" className="h-10 sm:h-12" />
                         </div>
                     </Link>
                     <div className='flex items-center gap-3'>

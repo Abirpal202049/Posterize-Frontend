@@ -20,10 +20,14 @@ const UpdatePost = ({ singleOffer }) => {
   return (
     <div>
       <Navbar>
-        <Link href="/dashboard">
-          <div className='text-xl flex items-center font-medium bg-red-900 text-white px-7 py-2 rounded-full gap-1 cursor-pointer shadow-2xl hover:bg-red-800 transition-all duration-200 justify-center'>
+      <Link href="/dashboard">
+          <div className='text-xl hidden sm:flex items-center font-medium bg-red-900 text-white px-7 py-2 rounded-full gap-1 cursor-pointer shadow-2xl hover:bg-red-800 transition-all duration-200'>
             <MdDashboard fontSize={25} />
             Dashboard
+          </div>
+
+          <div className='text-xl flex sm:hidden items-center font-medium text-red-900 '>
+            <MdDashboard fontSize={35} />
           </div>
         </Link>
       </Navbar>

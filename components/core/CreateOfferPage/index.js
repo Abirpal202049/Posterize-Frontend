@@ -7,16 +7,32 @@ import { useRouter } from 'next/router'
 
 const CreateOffer = () => {
     const router = useRouter()
-    const [noOfCustomer, setNoOfCustomer] = useState('Limited')
-    const [offerPerCustomer, setOfferPerCustomer] = useState('Limited')
+    const [noOfCustomer, setNoOfCustomer] = useState('Unlimited')
+    const [offerPerCustomer, setOfferPerCustomer] = useState('Unlimited')
 
 
-    const { register, handleSubmit, reset, formState } = useForm();
+    const { register, handleSubmit, reset, watch } = useForm();
+    const watchofferType = watch("offerType", "Flat_Discount")
+
+
+    console.log(watchofferType);
 
 
     const onSubmit = async (data) => {
         data.noOfCustomer = noOfCustomer
         data.offerPerCustomer = offerPerCustomer
+
+        if(data.offerType !== 'Percentage_Discount'){
+            data.discount = null
+            data.maxDiscount = null
+        }
+
+        if(noOfCustomer === "Unlimited"){
+            data.totalCustomer = null
+        }
+        if(offerPerCustomer === "Unlimited"){
+            data.usagePerCustomer = null
+        }
         console.log("Offer Data ", data);
 
         const res = await Axios.post(`${process.env.BASE_URL_DEV}/offer/create`, data)
@@ -25,7 +41,7 @@ const CreateOffer = () => {
             toast.success("Offer Created Successfully")
             reset()
             router.push(`/offer/${res?.data?.offer?.offerTitle}`)
-        }else{
+        } else {
             toast.error("Something went wrong")
         }
     }
@@ -90,22 +106,25 @@ const CreateOffer = () => {
                     <div className="w-full mx-2 flex-1 ">
                         <div className="font-bold h-6 mt-3 text-red-900 text-xs leading-8 uppercase">offer type</div>
                         <div className="bg-white my-2 p-1 flex border border-slate-200 rounded">
-                            <select name="" id="" className="p-1 px-2  outline-none w-full text-red-800" {...register("offerType")}>
-                                <option value="Percentage_Discount">Percentage Discount</option>
+                            <select name="" id="" className="p-1 px-2  outline-none w-full text-red-800" {...register("offerType")} >
                                 <option value="Flat_Discount">Flat Discount</option>
+                                <option value="Percentage_Discount">Percentage Discount</option>
                                 <option value="Free_Gift">Free Gift</option>
                             </select>
                         </div>
                     </div>
-                    <div className="w-full mx-2 flex-1 ">
-                        <div className="font-bold h-6 mt-3 text-red-900 text-xs leading-8 uppercase">discount percentage (%)</div>
-                        <div className="bg-white my-2 flex border border-slate-200 rounded items-center">
-                            <input type="number" placeholder="Enter the minimum order value" className="px-2 py-1 appearance-none outline-none w-full text-red-800" maxLength={60} {...register("discount")} />
-                            <div className="bg-slate-200 p-1 px-2 py-2 text-red-900">
-                                <FaPercent fontSize={20} />
+
+                    {watchofferType === "Percentage_Discount" && (
+                        <div className="w-full mx-2 flex-1 ">
+                            <div className="font-bold h-6 mt-3 text-red-900 text-xs leading-8 uppercase">discount percentage (%)</div>
+                            <div className="bg-white my-2 flex border border-slate-200 rounded items-center">
+                                <input type="number" placeholder="Enter the minimum order value" className="px-2 py-1 appearance-none outline-none w-full text-red-800" maxLength={60} {...register("discount")} />
+                                <div className="bg-slate-200 p-1 px-2 py-2 text-red-900">
+                                    <FaPercent fontSize={20} />
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )}
                 </div>
 
 
@@ -131,15 +150,17 @@ const CreateOffer = () => {
                         </div>
                     </div>
 
-                    <div className="w-full mx-2 flex-1 ">
-                        <div className="font-bold h-6 mt-3 text-red-900 text-xs leading-8 uppercase">Maximum discount </div>
-                        <div className="bg-white my-2 flex border border-slate-200 rounded items-center">
-                            <div className="bg-slate-200 p-1 px-2 py-2 text-red-900">
-                                <FaRupeeSign fontSize={20} />
+                    {watchofferType === "Percentage_Discount" && (
+                        <div className="w-full mx-2 flex-1 ">
+                            <div className="font-bold h-6 mt-3 text-red-900 text-xs leading-8 uppercase">Maximum discount </div>
+                            <div className="bg-white my-2 flex border border-slate-200 rounded items-center">
+                                <div className="bg-slate-200 p-1 px-2 py-2 text-red-900">
+                                    <FaRupeeSign fontSize={20} />
+                                </div>
+                                <input type="number" placeholder="Enter the maximum discount" className="px-2 py-1 appearance-none outline-none w-full text-red-800" {...register("maxDiscount")} />
                             </div>
-                            <input type="number" placeholder="Enter the maximum discount" className="px-2 py-1 appearance-none outline-none w-full text-red-800" {...register("maxDiscount")} />
                         </div>
-                    </div>
+                    )}
                 </div>
 
 
@@ -172,12 +193,15 @@ const CreateOffer = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="w-full mx-2 flex-1 ">
-                        <div className="font-bold h-6 mt-3 text-red-900 text-xs leading-8 uppercase">Total customers</div>
-                        <div className="bg-white my-2 p-1 flex border border-slate-200 rounded">
-                            <input type="number" placeholder="Enter the total customers" className="p-1 px-2 appearance-none outline-none w-full text-red-800" {...register("totalCustomer")} />
+
+                    {noOfCustomer === "Limited" && (
+                        <div className="w-full mx-2 flex-1 ">
+                            <div className="font-bold h-6 mt-3 text-red-900 text-xs leading-8 uppercase">Total customers</div>
+                            <div className="bg-white my-2 p-1 flex border border-slate-200 rounded">
+                                <input type="number" placeholder="Enter the total customers" className="p-1 px-2 appearance-none outline-none w-full text-red-800" {...register("totalCustomer")} />
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
 
 
@@ -196,12 +220,15 @@ const CreateOffer = () => {
                         </div>
 
                     </div>
-                    <div className="w-full mx-2 flex-1 ">
-                        <div className="font-bold h-6 mt-3 text-red-900 text-xs leading-8 uppercase">Usage per customer</div>
-                        <div className="bg-white my-2 p-1 flex border border-slate-200 rounded">
-                            <input type="number" placeholder="Enter the usage per customer" className="p-1 px-2 appearance-none outline-none w-full text-red-800" {...register("usagePerCustomer")} />
+
+                    {offerPerCustomer === "Limited" && (
+                        <div className="w-full mx-2 flex-1 ">
+                            <div className="font-bold h-6 mt-3 text-red-900 text-xs leading-8 uppercase">Usage per customer</div>
+                            <div className="bg-white my-2 p-1 flex border border-slate-200 rounded">
+                                <input type="number" placeholder="Enter the usage per customer" className="p-1 px-2 appearance-none outline-none w-full text-red-800" {...register("usagePerCustomer")} />
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
 
 

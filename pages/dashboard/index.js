@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ContainerLayout from '../../components/layout/ContainerLayout/index.js';
 import { IoAdd } from 'react-icons/io5';
 import Navbar from '../../components/common/Navbar.js';
@@ -9,16 +9,31 @@ import OfferCard from '../../components/core/DashboardPage/OfferCard.js';
 
 
 const Dashboard = ({ Offers }) => {
-    console.log("All Offer - ", Offers);
+    // console.log("All Offer - ", Offers);
+
+    const [openDelModal, setOpenDelModal] = useState(false)
+
+    const openDeleteModal = () => {
+        try {
+            setOpenDelModal(true)
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
     return (
         <>
             {/* Navbar */}
             <Navbar>
                 <Link href="/offer/create">
-                    <div className='text-xl flex items-center font-medium bg-red-900 text-white px-7 py-2 rounded-full gap-1 cursor-pointer shadow-2xl hover:bg-red-800 transition-all duration-200'>
+                    <div className='text-xl hidden sm:flex items-center font-medium bg-red-900 text-white px-7 py-2 rounded-full gap-1 cursor-pointer shadow-2xl hover:bg-red-800 transition-all duration-200'>
                         <IoAdd fontSize={25} />
                         Create Offer
                     </div>
+                    <div className='text-xl flex sm:hidden items-center font-medium text-red-900 rounded-full border-2 border-red-900'>
+                        <IoAdd fontSize={25} />
+                    </div>
+                    
                 </Link>
             </Navbar>
 
@@ -40,7 +55,7 @@ const Dashboard = ({ Offers }) => {
                     <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-5'>
                         {Offers?.allOffer.map((element, i) => {
                             return (
-                                <OfferCard data={element} key={i}/>
+                                <OfferCard data={element} openDelModal={openDelModal} setOpenDelModal={setOpenDelModal} key={i}/>
                             )
                         })}
                     </div>
@@ -48,6 +63,10 @@ const Dashboard = ({ Offers }) => {
 
 
             </ContainerLayout>
+
+            {openDelModal && (
+                <div onClick={()=>setOpenDelModal(false)} className='fixed backdrop-blur-sm top-0 left-0 right-0 bottom-0 flex bg-[#00000055]'></div>
+            )}
         </>
     )
 }

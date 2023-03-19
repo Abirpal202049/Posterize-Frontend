@@ -72,7 +72,7 @@ const LoginForm = () => {
                             {...register("password", { required: true })}
                         />
                     </div>
-                    <button type='submit' className="px-4 py-2 rounded bg-red-400 text-white hover:bg-red-900 my-4 w-full">Login</button>
+                    <button type='submit' className="px-4 py-2 rounded bg-red-900 text-white hover:bg-red-800 my-4 w-full">Login</button>
                 </div>
             </form>
         </div>
