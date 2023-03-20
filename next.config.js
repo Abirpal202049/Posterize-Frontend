@@ -6,7 +6,7 @@ const nextConfig = {
     domains: [],
   },
   env: {
-    BASE_URL_DEV: 'http://localhost:7096/api',
+    BASE_URL_DEV: 'https://posterize.abirfriend.com/api',
   },
   async headers() {
     return [

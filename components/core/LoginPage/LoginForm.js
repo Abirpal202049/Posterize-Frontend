@@ -5,9 +5,19 @@ import { useForm } from "react-hook-form";
 import Axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { useRouter } from 'next/router'
+import { useContext } from "react";
+import AppContext from '../../../AppContext';
+
 
 const LoginForm = () => {
     const router = useRouter()
+    let value = useContext(AppContext);
+
+    const {token, setToken} = value;
+
+    console.log("Value", value);
+    console.log("Token", token);
+    console.log("setToken", setToken);
 
     // Setting the default vale of the form
     const defaultInitialValue = {
@@ -22,6 +32,9 @@ const LoginForm = () => {
         console.log("Data ", data);
         const res = await Axios.post(`${process.env.BASE_URL_DEV}/user/login`, data)
         if (res.data.success){
+            console.log("Res : ", res.data);
+            setToken(res.data.token)
+            localStorage.setItem("token", res.data.token)
             router.push("/dashboard")
         }else{
             toast.error("Invalid Username and Password")
