@@ -36,8 +36,8 @@ const UpdateForm = ({ defaultData }) => {
         const res = await Axios.put(`${process.env.BASE_URL_DEV}/offer/update/${defaultData._id}`, data)
         console.log(res.data);
         if (res.data.success) {
-            toast.success("Offer Updated Successfully")
             router.push(`/dashboard`)
+            toast.success("Offer Updated Successfully")
         } else {
             toast.error("Something went wrong")
         }

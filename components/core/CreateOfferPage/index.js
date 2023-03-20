@@ -38,9 +38,9 @@ const CreateOffer = () => {
         const res = await Axios.post(`${process.env.BASE_URL_DEV}/offer/create`, data)
         console.log(res.data);
         if (res.data.success) {
-            toast.success("Offer Created Successfully")
             reset()
-            router.push(`/offer/${res?.data?.offer?.offerTitle}`)
+            router.push(`/dashboard`)
+            toast.success("Offer Created Successfully")
         } else {
             toast.error("Something went wrong")
         }
