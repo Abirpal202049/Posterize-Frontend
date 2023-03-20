@@ -66,7 +66,7 @@ const Dashboard = ({ Offers }) => {
                             No Offers Found!
                         </div>
                         <div className='text-slate-300 text-lg font-sans -mt-2'>
-                            Click on the <span><Link href="/offer/create"> 'Create Offers' </Link></span> button to get started
+                            Click on the <span><Link href="/offer/create"> Create Offers </Link></span> button to get started
                         </div>
                     </div>
                 ) : (
