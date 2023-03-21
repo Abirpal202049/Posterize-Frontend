@@ -20,7 +20,7 @@ const CreateOffer = () => {
 
     const onSubmit = async (data) => {
         data.noOfCustomer = noOfCustomer
-        data.offerPerCustomer = offerPerCustomer
+        data.offerUsePerCustomer = offerPerCustomer
 
         if(data.offerType !== 'Percentage_Discount'){
             data.discount = null
@@ -39,7 +39,8 @@ const CreateOffer = () => {
         console.log(res.data);
         if (res.data.success) {
             reset()
-            router.push(`/dashboard`)
+            // router.push(`/dashboard`)
+            router.push(`/offer/${res?.data?.offer?.offerTitle}`)
             toast.success("Offer Created Successfully")
         } else {
             toast.error("Something went wrong")
